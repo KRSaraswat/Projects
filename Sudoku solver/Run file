@@ -1,0 +1,20 @@
+reset;
+
+option solver xpress;
+
+model sudoku.mod;
+data sudoku.dat;
+
+solve;
+
+printf("+-------+-------+-------+ \n");
+for {i in 1..m}
+	{printf("|");
+		for {j in 1..m}
+			{ printf " %d", sum{k in 1..m} x[i,j,k] * k;
+				if j mod n = 0 then printf(" |");
+				if j mod m = 0 then printf(" \n");
+			}
+
+	if i mod n = 0 then printf("+-------+-------+-------+ \n");
+	}
