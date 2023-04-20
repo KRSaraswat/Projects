@@ -1,0 +1,16 @@
+param m := 9;
+param n := 3;
+
+param value{1..m, 1..m}, integer, >=0, <=m, default 0;
+
+var x{i in 1..m, j in 1..m, k in 1..m}, binary;
+
+s.t. cond{i in 1..m, j in 1..m, k in 1..m : value[i,j]>0}:
+	x[i,j,k] = (if value[i,j] = k then 1 else 0);
+
+s.t. assign{i in 1..m, j in 1..m}: sum{k in 1..m} x[i,j,k] = 1;
+s.t. row{i in 1..m, k in 1..m}: sum{j in 1..m} x[i,j,k] = 1;
+s.t. column{j in 1..m, k in 1..m}: sum{i in 1..m} x[i,j,k] =1;
+
+s.t. block{p in 1..(m/n), q in 1..(m/n), k in 1..m}:
+	sum{i in n*p-n+1..n*p, j in n*q-n+1..n*q} x[i,j,k]=1;
